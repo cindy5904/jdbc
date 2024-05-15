@@ -3,6 +3,7 @@ package org.example.TpJdbc.DAO;
 import org.example.TpJdbc.entity.Meal;
 import org.example.TpJdbc.util.DatabaseManager;
 
+import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Timestamp;
@@ -14,11 +15,10 @@ import java.util.List;
 public class MealDAO extends BaseDAO<Meal>{
     private AnimalDAO animalDAO;
 
-    public MealDAO (){
-
-        animalDAO = new AnimalDAO();
+    public MealDAO(Connection connection, AnimalDAO animalDAO) {
+        super(connection);
+        this.animalDAO = animalDAO;
     }
-
 
     @Override
     public Meal save(Meal element) throws SQLException {

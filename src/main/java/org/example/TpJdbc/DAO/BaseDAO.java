@@ -23,5 +23,15 @@ public abstract class BaseDAO<T> {
     public abstract T get (int id) throws SQLException;
     public abstract List<T> get () throws SQLException;
 
-
+    protected void close () throws SQLException{
+        if(!resultSet.isClosed()){
+            resultSet.close();
+        }
+        if(!preparedStatement.isClosed()){
+            preparedStatement.close();
+        }
+        if (!_connection.isClosed()){
+           _connection.close();
+        }
+    }
 }

@@ -3,12 +3,17 @@ package org.example.TpJdbc.DAO;
 import org.example.TpJdbc.entity.Animal;
 import org.example.TpJdbc.util.DatabaseManager;
 
+import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
 public class AnimalDAO extends BaseDAO<Animal>{
+    protected AnimalDAO(Connection connection) {
+        super(connection);
+    }
+
     @Override
     public Animal save(Animal element) throws SQLException {
         try{

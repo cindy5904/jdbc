@@ -15,10 +15,10 @@ public class AnimalIhm {
     private AnimalDAO animalDAO;
     private MealDAO mealDAO;
 
-    public AnimalIhm (Scanner scanner){
+    public AnimalIhm(Scanner scanner, AnimalDAO animalDAO, MealDAO mealDAO) {
         this.scanner = scanner;
-        animalDAO = new AnimalDAO();
-        mealDAO = new MealDAO();
+        this.animalDAO = animalDAO;
+        this.mealDAO = mealDAO;
     }
 
     public void start (){

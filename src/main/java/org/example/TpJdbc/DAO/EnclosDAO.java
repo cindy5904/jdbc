@@ -58,5 +58,10 @@ public class EnclosDAO extends BaseDAO<Enclos>{
         return null;
     }
 
+    @Override
+    public List<Enclos> get() throws SQLException {
+        return null;
+    }
+
 
 }

@@ -9,10 +9,10 @@ public class Ihm {
 
     private MealIhm mealIhm;
 
-    public Ihm (){
-        scanner = new Scanner(System.in);
-        animalIhm = new AnimalIhm(scanner);
-        mealIhm = new MealIhm(scanner);
+    public Ihm(Scanner scanner, AnimalIhm animalIhm, MealIhm mealIhm) {
+        this.scanner = scanner;
+        this.animalIhm = animalIhm;
+        this.mealIhm = mealIhm;
     }
 
     public void start (){
