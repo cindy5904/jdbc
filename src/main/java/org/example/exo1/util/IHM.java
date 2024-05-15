@@ -30,6 +30,7 @@ public class IHM {
             System.out.println("--- Gestion de film ---");
             System.out.println("1/ Creation de film");
             System.out.println("2/ afficher toutes les films");
+            System.out.println("3/ Modifier un film");
             entry = scanner.nextInt();
             scanner.nextLine();
 
@@ -42,7 +43,7 @@ public class IHM {
                     break;
                 case 3 :
                     updateFilm();
-
+                    break;
                 default:
                     return;
             }
@@ -77,12 +78,24 @@ public class IHM {
         }
 
         private void updateFilm() {
-            try{
-                Film film =filmDAO.updateFilm(titre, realisateur, genre);
-                System.out.println("le film a ete modifier " + film);
-            }catch(SQLException e){
-                throw new RuntimeException(e);
+            System.out.println("--- Modification du film ---");
+            System.out.println("Entrez l'identifiant du film à modifier :");
+            int id = Integer.parseInt(scanner.nextLine());
+            System.out.println("Nouveau titre du film :");
+            String nouveauTitre = scanner.nextLine();
+            System.out.println("Nouveau réalisateur du film :");
+            String nouveauRealisateur = scanner.nextLine();
+            System.out.println("Nouveau genre du film :");
+            String nouveauGenre = scanner.nextLine();
+
+            try {
+                filmDAO.updateFilm(id, nouveauTitre, nouveauRealisateur, nouveauGenre);
+                System.out.println("Le film a été modifié avec succès.");
+            } catch (SQLException e) {
+                throw new RuntimeException("Erreur lors de la modification du film.", e);
             }
+
+
         }
     }
 

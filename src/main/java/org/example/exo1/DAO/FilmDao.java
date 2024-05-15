@@ -57,9 +57,4 @@ public class FilmDao {
         preparedStatement.setString(4, genre);
         preparedStatement.executeUpdate();
     }
-
-
-
-
-
 }
