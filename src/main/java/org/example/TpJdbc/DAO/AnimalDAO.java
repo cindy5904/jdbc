@@ -12,28 +12,28 @@ public class AnimalDAO extends BaseDAO<Animal>{
     @Override
     public Animal save(Animal element) throws SQLException {
         try{
-            connection = DatabaseManager.getConnection();
+            _connection = DatabaseManager.getConnection();
             request = "INSERT INTO animal (name,race,description,habitat,age) VALUE (?,?,?,?,?)";
-            statement = connection.prepareStatement(request, Statement.RETURN_GENERATED_KEYS);
-            statement.setString(1,element.getName());
-            statement.setString(2,element.getRace());
-            statement.setString(3,element.getDescription());
-            statement.setString(4,element.getHabitat());
-            statement.setInt(5,element.getAge());
-            int row = statement.executeUpdate();
-            resultSet = statement.getGeneratedKeys();
+            preparedStatement = _connection.prepareStatement(request, Statement.RETURN_GENERATED_KEYS);
+            preparedStatement.setString(1,element.getName());
+            preparedStatement.setString(2,element.getRace());
+            preparedStatement.setString(3,element.getDescription());
+            preparedStatement.setString(4,element.getHabitat());
+            preparedStatement.setInt(5,element.getAge());
+            int row = preparedStatement.executeUpdate();
+            resultSet = preparedStatement.getGeneratedKeys();
             if(row != 1){
                 throw new SQLException();
             }
             if(resultSet.next()){
                 element.setId(resultSet.getInt(1));
             }
-            connection.commit();
+            _connection.commit();
             return element;
 
         }catch (SQLException e){
             System.out.println(e.getMessage());
-            connection.rollback();
+            _connection.rollback();
             return null;
         }finally {
             close();
@@ -53,11 +53,11 @@ public class AnimalDAO extends BaseDAO<Animal>{
     @Override
     public Animal get(int id) throws SQLException {
         try{
-            connection = DatabaseManager.getConnection();
+            _connection = DatabaseManager.getConnection();
             request = "SELECT * FROM animal WHERE id = ?";
-            statement = connection.prepareStatement(request);
-            statement.setInt(1,id);
-            resultSet = statement.executeQuery();
+            preparedStatement = _connection.prepareStatement(request);
+            preparedStatement.setInt(1,id);
+            resultSet = preparedStatement.executeQuery();
             if(resultSet.next()){
                 return Animal.builder()
                         .id(resultSet.getInt("id"))
@@ -81,10 +81,10 @@ public class AnimalDAO extends BaseDAO<Animal>{
     public List<Animal> get() throws SQLException {
         try{
             List<Animal> animals = new ArrayList<>();
-            connection = DatabaseManager.getConnection();
+            _connection = DatabaseManager.getConnection();
             request = "SELECT * FROM animal";
-            statement = connection.prepareStatement(request);
-            resultSet = statement.executeQuery();
+            preparedStatement = _connection.prepareStatement(request);
+            resultSet = preparedStatement.executeQuery();
             while(resultSet.next()){
                 animals.add(Animal.builder()
                         .id(resultSet.getInt("id"))
@@ -107,7 +107,7 @@ public class AnimalDAO extends BaseDAO<Animal>{
     public List<Animal> search (String searcheValue, String value) throws SQLException{
         try {
             List<Animal> animals = new ArrayList<>();
-            connection = DatabaseManager.getConnection();
+            _connection = DatabaseManager.getConnection();
             switch (searcheValue){
                 case  "AGE":
                     request="SELECT * FROM animal WHERE age = ?";
@@ -117,9 +117,9 @@ public class AnimalDAO extends BaseDAO<Animal>{
                     value = "%"+value+"%";
                     break;
             }
-            statement = connection.prepareStatement(request);
-            statement.setString(1,value);
-            resultSet = statement.executeQuery();
+            preparedStatement = _connection.prepareStatement(request);
+            preparedStatement.setString(1,value);
+            resultSet = preparedStatement.executeQuery();
             while (resultSet.next()){
                 animals.add(Animal.builder()
                         .id(resultSet.getInt("id"))

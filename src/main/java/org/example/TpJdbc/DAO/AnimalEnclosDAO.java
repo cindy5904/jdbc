@@ -13,7 +13,7 @@ public class AnimalEnclosDAO extends BaseDAO<AnimalEnclos> {
     private AnimalDAO animalDao;
     public AnimalEnclosDAO(Connection connection) {
         super(connection);
-        animalDao = new AnimalDAO(connection);
+
     }
 
     @Override

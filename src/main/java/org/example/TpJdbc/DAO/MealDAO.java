@@ -15,6 +15,7 @@ public class MealDAO extends BaseDAO<Meal>{
     private AnimalDAO animalDAO;
 
     public MealDAO (){
+
         animalDAO = new AnimalDAO();
     }
 
@@ -22,25 +23,25 @@ public class MealDAO extends BaseDAO<Meal>{
     @Override
     public Meal save(Meal element) throws SQLException {
         try{
-            connection = DatabaseManager.getConnection();
+           _connection = DatabaseManager.getConnection();
             request = "INSERT INTO meal(description,meal_date,animal_id) VALUE (?,?,?)";
-            statement = connection.prepareStatement(request, Statement.RETURN_GENERATED_KEYS);
-            statement.setString(1,element.getDescription());
-            statement.setTimestamp(2, Timestamp.valueOf(element.getMealDate()));
-            statement.setInt(3,element.getAnimal().getId());
-            int row = statement.executeUpdate();
-            resultSet = statement.getGeneratedKeys();
+            preparedStatement = _connection.prepareStatement(request, Statement.RETURN_GENERATED_KEYS);
+           preparedStatement.setString(1,element.getDescription());
+            preparedStatement.setTimestamp(2, Timestamp.valueOf(element.getMealDate()));
+            preparedStatement.setInt(3,element.getAnimal().getId());
+            int row = preparedStatement.executeUpdate();
+            resultSet = preparedStatement.getGeneratedKeys();
             if(row != 1){
                 throw new SQLException();
             }
             if(resultSet.next()){
                 element.setId(resultSet.getInt(1));
             }
-            connection.commit();
+            _connection.commit();
             return element;
         }catch (SQLException e){
             System.out.println(e.getMessage());
-            connection.rollback();
+            _connection.rollback();
             return null;
         }finally {
             close();
@@ -60,11 +61,11 @@ public class MealDAO extends BaseDAO<Meal>{
     @Override
     public Meal get(int id) throws SQLException {
         try{
-            connection = DatabaseManager.getConnection();
+            _connection = DatabaseManager.getConnection();
             request = "SELECT * FROM meal WHERE id = ?";
-            statement = connection.prepareStatement(request);
-            statement.setInt(1,id);
-            resultSet = statement.executeQuery();
+            preparedStatement = _connection.prepareStatement(request);
+            preparedStatement.setInt(1,id);
+            resultSet = preparedStatement.executeQuery();
             if(resultSet.next()){
                 return Meal.builder()
                         .id(resultSet.getInt("id"))
@@ -85,10 +86,10 @@ public class MealDAO extends BaseDAO<Meal>{
     public List<Meal> get() throws SQLException {
         try{
             List<Meal> meals = new ArrayList<>();
-            connection = DatabaseManager.getConnection();
+            _connection = DatabaseManager.getConnection();
             request = "SELECT * FROM meal";
-            statement = connection.prepareStatement(request);
-            resultSet = statement.executeQuery();
+            preparedStatement = _connection.prepareStatement(request);
+            resultSet = preparedStatement.executeQuery();
             if(resultSet.next()){
                 meals.add(Meal.builder()
                         .id(resultSet.getInt("id"))
@@ -108,11 +109,11 @@ public class MealDAO extends BaseDAO<Meal>{
     public List<Meal> getMealByAnimalId (int id_animal)throws SQLException{
         try{
             List<Meal> meals = new ArrayList<>();
-            connection = DatabaseManager.getConnection();
+            _connection = DatabaseManager.getConnection();
             request = "SELECT * FROM meal WHERE animal_id = ?";
-            statement = connection.prepareStatement(request);
-            statement.setInt(1,id_animal);
-            resultSet = statement.executeQuery();
+            preparedStatement = _connection.prepareStatement(request);
+            preparedStatement.setInt(1,id_animal);
+            resultSet = preparedStatement.executeQuery();
             while (resultSet.next()){
                 meals.add(Meal.builder()
                         .id(resultSet.getInt("id"))
