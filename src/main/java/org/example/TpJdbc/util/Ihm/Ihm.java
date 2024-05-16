@@ -4,15 +4,17 @@ import java.util.Scanner;
 
 public class Ihm {
     private Scanner scanner;
-
     private AnimalIhm animalIhm;
-
     private MealIhm mealIhm;
 
     public Ihm(Scanner scanner, AnimalIhm animalIhm, MealIhm mealIhm) {
         this.scanner = scanner;
         this.animalIhm = animalIhm;
         this.mealIhm = mealIhm;
+    }
+
+    public Ihm() {
+
     }
 
     public void start (){
